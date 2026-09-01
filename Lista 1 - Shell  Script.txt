@@ -1,0 +1,770 @@
+Lista 1 - Shell  Script
+
+1)
+#!/bin/bash
+
+echo "CALCULADORA"
+
+echo "Digite o primeiro número:"
+read num1
+
+echo "Digite o segundo número:"
+read num2
+
+echo "1 - Soma"
+echo "2 - Subtração"
+echo "3 - Multiplicação"
+echo "4 - Divisão"
+echo "5 - Sair"
+
+
+echo "Escolha uma opção:"
+read opcao
+
+if [ "$opcao" -eq 1 ]; then
+    resultado=$(expr $num1 + $num2)
+    echo "Resultado da soma: $resultado"
+
+elif [ "$opcao" -eq 2 ]; then
+    resultado=$(expr $num1 - $num2)
+    echo "Resultado da subtração: $resultado"
+
+elif [ "$opcao" -eq 3 ]; then
+    resultado=$(expr $num1 \* $num2)
+    echo "Resultado da multiplicação: $resultado"
+
+elif [ "$opcao" -eq 4 ]; then
+    if [ "$num2" -eq 0 ]; then
+        echo "Erro: não é possível dividir por zero."
+    else
+        resultado=$(expr $num1 / $num2)
+        echo "Resultado da divisão: $resultado"
+    fi
+
+elif [ "$opcao" -eq 5 ]; then
+    echo "Saindo da calculadora..."
+
+else
+    echo "Opção inválida! Escolha uma opção de 1 a 5."
+fi
+
+2)
+#!/bin/bash
+
+echo "REMOÇÃO DE ARQUIVO"
+
+echo "Digite o nome do arquivo que deseja remover:"
+read arquivo
+
+if [ -f "$arquivo" ]; then
+    rm "$arquivo"
+    echo "Arquivo '$arquivo' foi removido com sucesso."
+else
+    echo "Arquivo '$arquivo' não foi encontrado."
+fi
+
+3)
+#!/bin/bash
+
+echo "RENOMEAR ARQUIVO"
+
+echo "Digite o nome atual do arquivo:"
+read arquivo
+
+if [ -f "$arquivo" ]; then
+
+    echo "Digite o novo nome do arquivo:"
+    read novo_nome
+
+    mv "$arquivo" "$novo_nome"
+
+    echo "Arquivo renomeado com sucesso!"
+    echo "Novo nome: $novo_nome"
+
+else
+
+    echo "Arquivo '$arquivo' não foi encontrado."
+
+fi
+
+4)
+#!/bin/bash
+
+echo "MOVER ARQUIVO"
+
+echo "Digite o nome do arquivo:"
+read arquivo
+
+if [ -f "$arquivo" ]; then
+
+    echo "Digite o diretório de destino:"
+    read destino
+
+    if [ -d "$destino" ]; then
+
+        mv "$arquivo" "$destino"
+
+        echo "Arquivo movido com sucesso!"
+
+    else
+
+        echo "O diretório de destino não foi encontrado."
+
+    fi
+
+else
+
+    echo "O arquivo '$arquivo' não foi encontrado."
+
+fi
+
+5)
+#!/bin/bash
+
+echo "VERIFICAR USUÁRIO"
+
+echo "Digite o nome do usuário:"
+read usuario
+
+if grep "^$usuario:" /etc/passwd > /dev/null; then
+    echo "Usuário encontrado."
+else
+    echo "Usuário não encontrado."
+fi
+
+6)
+#!/bin/bash
+
+echo "PROCURAR PALAVRA"
+
+echo "Digite a palavra ou string que deseja procurar:"
+read palavra
+
+echo "Digite o nome do arquivo:"
+read arquivo
+
+if [ -f "$arquivo" ]; then
+
+    if grep "$palavra" "$arquivo" > /dev/null; then
+        echo "Palavra encontrada."
+        echo "Linhas onde a palavra foi encontrada:"
+        grep "$palavra" "$arquivo"
+    else
+        echo "Palavra não encontrada."
+    fi
+
+else
+
+    echo "Arquivo não encontrado."
+
+fi
+
+7)
+#!/bin/bash
+
+echo "PROCURAR ARQUIVOS"
+
+
+echo "1 - Procurar arquivo utilizando find"
+echo "2 - Procurar comando utilizando whereis"
+echo "3 - Procurar arquivo utilizando locate"
+
+echo "Escolha uma opção:"
+read opcao
+
+if [ "$opcao" -eq 1 ]; then
+
+    echo "Digite o nome do arquivo que deseja procurar:"
+    read arquivo
+
+    echo "Procurando arquivo com find..."
+    find / -name "$arquivo" 2>/dev/null
+
+elif [ "$opcao" -eq 2 ]; then
+
+    echo "Digite o nome do comando que deseja procurar:"
+    read comando
+
+    echo "Procurando comando com whereis..."
+    whereis "$comando"
+
+elif [ "$opcao" -eq 3 ]; then
+
+    echo "Digite o nome do arquivo que deseja procurar:"
+    read arquivo
+
+    echo "Procurando arquivo com locate..."
+    locate "$arquivo"
+
+else
+
+    echo "Opção inválida! Escolha uma opção de 1 a 3."
+
+fi
+
+8)
+#!/bin/bash
+
+echo "CONCATENAR ARQUIVOS"
+
+echo "Digite o nome do primeiro arquivo:"
+read arquivo1
+
+echo "Digite o nome do segundo arquivo:"
+read arquivo2
+
+echo "Digite o nome do arquivo de destino:"
+read resultado
+
+if [ -f "$arquivo1" ] && [ -f "$arquivo2" ]; then
+
+    cat "$arquivo1" "$arquivo2" > "$resultado"
+
+    echo "Arquivos concatenados com sucesso!"
+    echo "Resultado salvo em: $resultado"
+
+else
+
+    echo "Um ou os dois arquivos não foram encontrados."
+
+fi
+
+9)
+#!/bin/bash
+
+echo "COMPARAR ARQUIVOS"
+
+echo "Digite o nome do primeiro arquivo:"
+read arquivo1
+
+echo "Digite o nome do segundo arquivo:"
+read arquivo2
+
+if [ -f "$arquivo1" ] && [ -f "$arquivo2" ]; then
+
+    if diff "$arquivo1" "$arquivo2" > /dev/null; then
+        echo "Os arquivos são iguais."
+    else
+        echo "Os arquivos possuem diferenças."
+        echo ""
+        echo "Diferenças encontradas:"
+        diff "$arquivo1" "$arquivo2"
+    fi
+
+else
+
+    echo "Um ou os dois arquivos não foram encontrados."
+
+fi
+
+10)
+#!/bin/bash
+
+echo "INFORMAÇÕES DO USUÁRIO"
+
+echo "Digite o nome do usuário:"
+read usuario
+
+if grep "^$usuario:" /etc/passwd > /dev/null; then
+
+    echo ""
+    echo "Nome do usuário: $usuario"
+
+    home=$(grep "^$usuario:" /etc/passwd | cut -d: -f6)
+
+    echo "Diretório de trabalho: $home"
+
+    echo "Espaço utilizado pelo diretório:"
+    du -sh "$home"
+
+else
+
+    echo "Usuário '$usuario' não existe no sistema."
+
+fi
+
+11)
+#!/bin/bash
+
+
+echo "USUÁRIOS CONECTADOS"
+
+
+echo "1 - Listar usuários"
+echo "2 - Visualizar informações detalhadas"
+
+
+echo "Escolha uma opção:"
+read opcao
+
+if [ "$opcao" -eq 1 ]; then
+
+    echo ""
+    echo "Usuários atualmente conectados:"
+    who
+
+elif [ "$opcao" -eq 2 ]; then
+
+    echo ""
+    echo "Informações detalhadas:"
+    who -H
+
+else
+
+    echo "Opção inválida! Escolha 1 ou 2."
+
+fi
+
+echo ""
+echo "Esses são os usuários atualmente conectados ao sistema."
+
+12)
+#!/bin/bash
+
+echo "ALTERAR PERMISSÕES"
+
+echo "Digite o nome do arquivo:"
+read arquivo
+
+if [ -f "$arquivo" ]; then
+
+    echo ""
+    echo "Escolha a permissão desejada:"
+    echo "1 - 644"
+    echo "2 - 755"
+    echo "3 - 700"
+    echo "4 - Digitar outra permissão"
+    echo ""
+
+    echo "Escolha uma opção:"
+    read opcao
+
+    if [ "$opcao" -eq 1 ]; then
+        chmod 644 "$arquivo"
+        echo "Permissão do arquivo alterada para 644."
+
+    elif [ "$opcao" -eq 2 ]; then
+        chmod 755 "$arquivo"
+        echo "Permissão do arquivo alterada para 755."
+
+    elif [ "$opcao" -eq 3 ]; then
+        chmod 700 "$arquivo"
+        echo "Permissão do arquivo alterada para 700."
+
+    elif [ "$opcao" -eq 4 ]; then
+        echo "Digite a permissão desejada:"
+        read permissao
+
+        chmod "$permissao" "$arquivo"
+        echo "Permissão do arquivo alterada para $permissao."
+
+    else
+        echo "Opção inválida."
+
+    fi
+
+else
+
+    echo "Arquivo '$arquivo' não encontrado."
+
+fi
+
+13)
+#!/bin/bash
+
+echo "PROCESSOS EM EXECUÇÃO"
+
+echo ""
+echo "Abaixo estão os processos atualmente"
+echo "em execução no sistema:"
+echo ""
+
+ps aux
+
+14)
+#!/bin/bash
+
+echo "PROCURAR PROCESSO"
+
+echo "Digite o nome do processo que deseja procurar:"
+read processo
+
+resultado=$(ps aux | grep "$processo" | grep -v grep)
+
+if [ -n "$resultado" ]; then
+    echo ""
+    echo "Processo encontrado:"
+    echo "$resultado"
+else
+    echo ""
+    echo "Nenhum processo encontrado."
+fi
+
+15)
+#!/bin/bash
+
+echo "ENCERRAR PROCESSO"
+
+echo "Digite o PID do processo que deseja encerrar:"
+read pid
+
+if ps -ef | grep -w "$pid" | grep -v grep > /dev/null; then
+
+    echo ""
+    echo "PID informado: $pid"
+    echo "O processo foi encontrado."
+    echo "Deseja realmente encerrar esse processo? (s/n)"
+    read resposta
+
+    if [ "$resposta" = "s" ]; then
+
+        kill "$pid"
+        echo "Processo $pid encerrado."
+
+    else
+
+        echo "Operação cancelada."
+
+    fi
+
+else
+
+    echo "PID $pid não foi encontrado entre os processos em execução."
+
+fi
+
+16)
+#!/bin/bash
+
+echo "INFORMAÇÕES DO KERNEL"
+
+echo "Informações do Kernel"
+
+uname -a
+
+echo ""
+echo "Deseja visualizar somente o nome do Kernel? (s/n)"
+read opcao
+
+if [ "$opcao" = "s" ]; then
+    echo ""
+    echo "Nome do Kernel:"
+    uname -s
+fi
+
+17)
+#!/bin/bash
+
+echo "CONTADOR DE ARQUIVO"
+
+echo "Digite o nome do arquivo:"
+read arquivo
+
+if [ -f "$arquivo" ]; then
+
+    echo ""
+    echo "Arquivo: $arquivo"
+
+    echo "Linhas:"
+    wc -l "$arquivo"
+
+    echo "Palavras:"
+    wc -w "$arquivo"
+
+    echo "Caracteres:"
+    wc -m "$arquivo"
+
+else
+
+    echo "Arquivo '$arquivo' não foi encontrado."
+
+fi
+
+18)
+#!/bin/bash
+
+echo "PAINEL DE INFORMAÇÕES"
+
+echo ""
+echo "1. Data atual:"
+date
+
+echo ""
+echo "2. Versão do Kernel:"
+uname -a
+
+echo ""
+echo "3. Calendário do mês atual:"
+cal
+
+echo ""
+echo "4. Tempo de funcionamento do sistema:"
+uptime
+
+echo "FIM DAS INFORMAÇÕES"
+
+19)
+#!/bin/bash
+
+
+echo "INFORMAÇÕES DO SISTEMA"
+
+
+echo "1 - Data atual"
+echo "2 - Versão do kernel"
+echo "3 - Calendário"
+echo "4 - Tempo de funcionamento"
+echo "5 - Usuários conectados"
+echo "6 - Processos em execução"
+echo "7 - Sair"
+
+echo "Digite uma opção:"
+read opcao
+
+if [ "$opcao" -eq 1 ]; then
+
+    echo ""
+    echo "Data atual:"
+    date
+
+elif [ "$opcao" -eq 2 ]; then
+
+    echo ""
+    echo "Versão do kernel:"
+    uname -a
+
+elif [ "$opcao" -eq 3 ]; then
+
+    echo ""
+    echo "Calendário:"
+    cal
+
+elif [ "$opcao" -eq 4 ]; then
+
+    echo ""
+    echo "Tempo de funcionamento:"
+    uptime
+
+elif [ "$opcao" -eq 5 ]; then
+
+    echo ""
+    echo "Usuários conectados:"
+    who
+
+elif [ "$opcao" -eq 6 ]; then
+
+    echo ""
+    echo "Processos em execução:"
+    ps aux
+
+elif [ "$opcao" -eq 7 ]; then
+
+    echo ""
+    echo "Saindo..."
+
+else
+
+    echo ""
+    echo "Opção inválida! Escolha uma opção de 1 a 7."
+
+fi
+
+20)
+#!/bin/bash
+
+echo "GERENCIAMENTO DE ARQUIVOS"
+
+echo "1 - Procurar arquivo"
+echo "2 - Procurar palavra em arquivo"
+echo "3 - Renomear arquivo"
+echo "4 - Mover arquivo"
+echo "5 - Remover arquivo"
+echo "6 - Comparar arquivos"
+echo "7 - Sair"
+
+echo "Escolha uma opção:"
+read opcao
+
+if [ "$opcao" -eq 1 ]; then
+
+    echo "Digite o nome do arquivo:"
+    read arquivo
+
+    echo "Procurando arquivo..."
+    find / -name "$arquivo" 2>/dev/null
+
+elif [ "$opcao" -eq 2 ]; then
+
+    echo "Digite a palavra que deseja procurar:"
+    read palavra
+
+    echo "Digite o nome do arquivo:"
+    read arquivo
+
+    if [ -f "$arquivo" ]; then
+        if grep "$palavra" "$arquivo" > /dev/null; then
+            echo "Palavra encontrada."
+            echo "Linhas encontradas:"
+            grep "$palavra" "$arquivo"
+        else
+            echo "Palavra não encontrada."
+        fi
+    else
+        echo "Arquivo não encontrado."
+    fi
+
+elif [ "$opcao" -eq 3 ]; then
+
+    echo "Digite o nome atual do arquivo:"
+    read arquivo
+
+    if [ -f "$arquivo" ]; then
+        echo "Digite o novo nome:"
+        read novo_nome
+
+        mv "$arquivo" "$novo_nome"
+        echo "Arquivo renomeado com sucesso."
+    else
+        echo "Arquivo não encontrado."
+    fi
+
+elif [ "$opcao" -eq 4 ]; then
+
+    echo "Digite o nome do arquivo:"
+    read arquivo
+
+    if [ -f "$arquivo" ]; then
+        echo "Digite o diretório de destino:"
+        read destino
+
+        if [ -d "$destino" ]; then
+            mv "$arquivo" "$destino"
+            echo "Arquivo movido com sucesso."
+        else
+            echo "Diretório de destino não encontrado."
+        fi
+    else
+        echo "Arquivo não encontrado."
+    fi
+
+elif [ "$opcao" -eq 5 ]; then
+
+    echo "Digite o nome do arquivo que deseja remover:"
+    read arquivo
+
+    if [ -f "$arquivo" ]; then
+        rm "$arquivo"
+        echo "Arquivo removido com sucesso."
+    else
+        echo "Arquivo não encontrado."
+    fi
+
+elif [ "$opcao" -eq 6 ]; then
+
+    echo "Digite o nome do primeiro arquivo:"
+    read arquivo1
+
+    echo "Digite o nome do segundo arquivo:"
+    read arquivo2
+
+    if [ -f "$arquivo1" ] && [ -f "$arquivo2" ]; then
+
+        if diff "$arquivo1" "$arquivo2" > /dev/null; then
+            echo "Os arquivos são iguais."
+        else
+            echo "Os arquivos possuem diferenças."
+            echo ""
+            echo "Diferenças encontradas:"
+            diff "$arquivo1" "$arquivo2"
+        fi
+
+    else
+        echo "Um ou os dois arquivos não foram encontrados."
+    fi
+
+elif [ "$opcao" -eq 7 ]; then
+
+    echo "Saindo do programa..."
+
+else
+
+    echo "Opção inválida! Escolha uma opção de 1 a 7."
+
+fi
+
+21)
+#!/bin/bash
+
+echo "GERENCIAMENTO DE PROCESSOS"
+
+echo "1 - Listar processos"
+echo "2 - Procurar processo"
+echo "3 - Encerrar processo"
+echo "4 - Sair"
+
+echo "Escolha uma opção:"
+read opcao
+
+if [ "$opcao" -eq 1 ]; then
+
+    echo ""
+    echo "Processos atualmente em execução:"
+    ps aux
+
+elif [ "$opcao" -eq 2 ]; then
+
+    echo ""
+    echo "Digite o nome do processo:"
+    read processo
+
+    resultado=$(ps aux | grep "$processo" | grep -v grep)
+
+    if [ -n "$resultado" ]; then
+        echo ""
+        echo "Processos encontrados:"
+        echo "$resultado"
+    else
+        echo "Nenhum processo encontrado."
+    fi
+
+elif [ "$opcao" -eq 3 ]; then
+
+    echo ""
+    echo "Digite o PID do processo:"
+    read pid
+
+    if ps -ef | grep -w "$pid" | grep -v grep > /dev/null; then
+
+        echo "PID informado: $pid"
+        echo "Processo encontrado."
+        echo "Deseja realmente encerrar esse processo? (s/n)"
+        read resposta
+
+        if [ "$resposta" = "s" ]; then
+            kill "$pid"
+            echo "Processo $pid encerrado."
+        else
+            echo "Operação cancelada."
+        fi
+
+    else
+
+        echo "PID $pid não foi encontrado."
+
+    fi
+
+elif [ "$opcao" -eq 4 ]; then
+
+    echo "Saindo do programa..."
+
+else
+
+    echo "Opção inválida! Escolha uma opção de 1 a 4."
+
+fi
+
+
+
+
+
+
